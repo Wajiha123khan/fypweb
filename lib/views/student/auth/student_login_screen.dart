@@ -156,8 +156,7 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                           ),
                           TextFormField(
                             controller: passwordC,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(),
+                            keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.next,
                             obscureText: visiblePass,
                             decoration: InputDecoration(

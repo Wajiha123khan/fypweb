@@ -1,5 +1,4 @@
 import 'package:classchronicalapp/routes.dart';
-import 'package:classchronicalapp/views/student/chat/chat_screen.dart';
 import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:classchronicalapp/color.dart';
@@ -59,12 +58,7 @@ class _StudentTeacherDetailScreenState
         ),
         backgroundColor: Palette.themeColor2,
         bottomNavigationBar: CustomSimpleRoundedButton(
-          onTap: () {
-            RouteNavigator.route(
-                context,
-                ChatScreen(
-                    username: widget.teacherName, userImage: widget.teachImg));
-          },
+          onTap: () {},
           height: size.height / 100 * 7,
           width: size.width,
           buttoncolor: Palette.themecolor,

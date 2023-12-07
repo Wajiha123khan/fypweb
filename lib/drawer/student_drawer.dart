@@ -71,7 +71,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           height: 80,
           padding: const EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: themegreycolor,
           ),
           child: Image.asset(
@@ -81,7 +81,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           ),
         ),
 
-        SizedBox(
+        const SizedBox(
           height: 12,
         ),
         //home
@@ -90,9 +90,9 @@ class _StudentDrawerState extends State<StudentDrawer> {
           child: ListTile(
             onTap: () {
               Navigator.popUntil(context, (route) => route.isFirst);
-              RouteNavigator.route(context, StudentNavBar());
+              RouteNavigator.route(context, const StudentNavBar());
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.home,
               color: Palette.themecolor,
             ),
@@ -115,7 +115,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           padding: const EdgeInsets.only(left: 10, right: 20),
           child: ListTile(
             onTap: () {},
-            leading: Icon(
+            leading: const Icon(
               Icons.school_outlined,
               color: Palette.themecolor,
             ),
@@ -138,7 +138,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           padding: const EdgeInsets.only(left: 10, right: 20),
           child: ListTile(
             onTap: () {},
-            leading: Icon(
+            leading: const Icon(
               Icons.quiz_outlined,
               color: Palette.themecolor,
             ),
@@ -161,7 +161,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           padding: const EdgeInsets.only(left: 10, right: 20),
           child: ListTile(
             onTap: () {},
-            leading: Icon(
+            leading: const Icon(
               Icons.book_rounded,
               color: Palette.themecolor,
             ),
@@ -179,58 +179,12 @@ class _StudentDrawerState extends State<StudentDrawer> {
             ),
           ),
         ),
-        //Fees
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 20),
-          child: ListTile(
-            onTap: () {},
-            leading: Icon(
-              Icons.money_outlined,
-              color: Palette.themecolor,
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Fees",
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-        ),
-        //Certificate's
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 20),
-          child: ListTile(
-            onTap: () {},
-            leading: Icon(
-              Icons.book_online_outlined,
-              color: Palette.themecolor,
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Certificate's",
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-        ),
 
         Padding(
           padding: const EdgeInsets.only(top: 12.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               SizedBox(
                 width: 10,
                 child: Divider(),
@@ -254,7 +208,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           padding: const EdgeInsets.only(left: 10, right: 20),
           child: ListTile(
             onTap: () {},
-            leading: Icon(
+            leading: const Icon(
               Icons.info_outline,
               color: Palette.themecolor,
             ),
@@ -276,7 +230,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
           padding: const EdgeInsets.only(left: 10, right: 20),
           child: ListTile(
             onTap: () {},
-            leading: Icon(
+            leading: const Icon(
               Icons.phone,
               color: Palette.themecolor,
             ),
@@ -294,8 +248,8 @@ class _StudentDrawerState extends State<StudentDrawer> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 20.0),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Text(
@@ -327,23 +281,23 @@ class _StudentDrawerState extends State<StudentDrawer> {
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.person,
                           size: 20,
                           color: Palette.themecolor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
                           "$firstName, $lastName",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         const Icon(
@@ -358,7 +312,7 @@ class _StudentDrawerState extends State<StudentDrawer> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     InkWell(
@@ -377,17 +331,17 @@ class _StudentDrawerState extends State<StudentDrawer> {
                       },
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.email,
                             size: 20,
                             color: Palette.themecolor,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(
                             "Email: ${emailName.toString()}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Color.fromRGBO(169, 171, 172, 1),

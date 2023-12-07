@@ -11,8 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthPro with ChangeNotifier {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
   String degree_id = "";
   studentSignupFunc(
       Uint8List _image,
@@ -36,7 +36,7 @@ class AuthPro with ChangeNotifier {
     String errorMessage = "";
 
     show_loading_dialog(context);
-    _firestore
+    firestore
         .collection("degree")
         .where('title', isEqualTo: degree_title.toString())
         .get()
@@ -44,7 +44,7 @@ class AuthPro with ChangeNotifier {
       value.docs.forEach((doc) async {
         degree_id = doc.data()["degree_id"].toString();
         try {
-          UserCredential cred = await _auth.createUserWithEmailAndPassword(
+          UserCredential cred = await auth.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
@@ -76,7 +76,7 @@ class AuthPro with ChangeNotifier {
               profile_image: url,
               doc: url_doc);
 
-          _firestore
+          firestore
               .collection("student_auth")
               .doc(
                 cred.user!.uid,
@@ -138,7 +138,7 @@ class AuthPro with ChangeNotifier {
       (value) async {
         value.docs.forEach(
           (doc) {
-            _firestore
+            firestore
                 .collection("student_auth")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .update({'semester_id': doc.data()["semester_id"].toString()});
@@ -152,7 +152,7 @@ class AuthPro with ChangeNotifier {
     String errorMessage = "";
     try {
       show_loading_dialog(context);
-      UserCredential cred = await _auth.signInWithEmailAndPassword(
+      UserCredential cred = await auth.signInWithEmailAndPassword(
           email: email.toString(), password: password.toString());
 
       Navigator.pop(context);

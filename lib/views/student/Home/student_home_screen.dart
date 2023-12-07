@@ -5,6 +5,7 @@ import 'package:classchronicalapp/model/student/student_model.dart';
 import 'package:classchronicalapp/model/teacher/teacher_model.dart';
 import 'package:classchronicalapp/provider/auth_pro.dart';
 import 'package:classchronicalapp/splash/splash_screen.dart';
+import 'package:classchronicalapp/utils/reusable_methods.dart';
 import 'package:classchronicalapp/views/student/teacher/student_teacher_details_screen.dart';
 import 'package:classchronicalapp/views/student/teacher/view_all_teachers_screen.dart';
 import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
@@ -98,118 +99,174 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 preferredSize: const Size.fromHeight(220),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Hi, Saba Khan',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Let’s start learning',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    RouteNavigator.route(
-                                        context,
-                                        Hero(
-                                          tag: "profile",
-                                          child: Image.asset(
-                                            "assets/images/jpg/avatar.jpeg",
-                                          ),
-                                        ));
-                                  },
-                                  child: Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: themewhitecolor
-                                                .withOpacity(0.8),
-                                            width: 2)),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Hero(
-                                        tag: "profile",
-                                        child: Image.asset(
-                                          "assets/images/jpg/avatar.jpeg",
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                  child: StreamBuilder<StudentModel>(
+                    stream: filterUser(FirebaseAuth.instance.currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong! ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        final studentModel = snapshot.data!;
 
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            //progress container
-                            Container(
-                              width: size.width,
-                              height: 70,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Palette.themeColor2,
-                                borderRadius: BorderRadius.circular(5),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 10,
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: const [
-                                      Text(
-                                        "Degree : ",
-                                        style: TextStyle(
-                                            color: themewhitecolor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16),
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Hi, ${studentModel.name} ${studentModel.surname}',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          const Text(
+                                            'Let’s start learning',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "Computer Science",
-                                        style: TextStyle(
-                                            color: themewhitecolor,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 16),
-                                      )
+                                      const Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          RouteNavigator.route(
+                                              context,
+                                              Hero(
+                                                tag: "profile",
+                                                child: Image.network(
+                                                    studentModel.profile_image),
+                                              ));
+                                        },
+                                        child: Container(
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: themewhitecolor
+                                                      .withOpacity(0.8),
+                                                  width: 2)),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Hero(
+                                              tag: "profile",
+                                              child: Image.network(
+                                                studentModel.profile_image,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
+
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  //progress container
+                                  Container(
+                                    width: size.width,
+                                    height: 70,
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Palette.themeColor2,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              "Roll No: ",
+                                              style: TextStyle(
+                                                  color: themewhitecolor,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16),
+                                            ),
+                                            Text(
+                                              studentModel.roll_no,
+                                              style: const TextStyle(
+                                                  color: themewhitecolor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 16),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              "Degree: ",
+                                              style: TextStyle(
+                                                  color: themewhitecolor,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16),
+                                            ),
+                                            FutureBuilder<String>(
+                                              future: ReusableMethods()
+                                                  .degreeNameGet(
+                                                      studentModel.degree_id),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  String fetchedData =
+                                                      snapshot.data!;
+
+                                                  return Text(
+                                                    fetchedData,
+                                                    style: const TextStyle(
+                                                        color: themewhitecolor,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 16),
+                                                  );
+                                                } else {
+                                                  return const Text("");
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                              )
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.grey.shade200));
+                      }
+                    },
                   ),
                 ),
               ),
@@ -429,13 +486,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         );
                       },
                       separatorBuilder: (context, separator) {
-                        return Divider(
+                        return const Divider(
                           thickness: 3,
                         );
-                        // return Image.asset(
-                        //   "assets/images/png/wave-divider-big.png",
-                        //   height: 50,
-                        // );
                       },
                     ),
                   ],
@@ -578,7 +631,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                     TextButton(
                       onPressed: () {
                         RouteNavigator.route(
-                            context, StudentViewAllTeachersScreen());
+                            context, const StudentViewAllTeachersScreen());
                       },
                       child: const Text(
                         "View All",
@@ -679,19 +732,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     );
   }
 
-  Stream<StudentModel> myProfileFilter(String currentUserUid) {
+  Stream<StudentModel> filterUser(String currentUserUid) {
     return FirebaseFirestore.instance
         .collection('student_auth')
         .doc(currentUserUid)
         .snapshots()
         .map((snapshot) => StudentModel.fromSnap(snapshot));
-  }
-
-  Stream<TeacherModel> filterTEacher(String currentUserUid) {
-    return FirebaseFirestore.instance
-        .collection('teacher_auth')
-        .doc(currentUserUid)
-        .snapshots()
-        .map((snapshot) => TeacherModel.fromSnap(snapshot));
   }
 }

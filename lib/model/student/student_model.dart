@@ -102,7 +102,7 @@ class StudentModel {
       roll_no: snapshot["roll_no"],
       email: snapshot["email"],
       phone_num: snapshot["phone_num"],
-      cnic_beform: snapshot["e"],
+      cnic_beform: snapshot["cnic_beform"],
       password: snapshot["password"],
       address: snapshot["address"],
       gender: snapshot["gender"],

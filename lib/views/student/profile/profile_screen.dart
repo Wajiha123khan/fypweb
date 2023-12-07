@@ -1,6 +1,9 @@
 import 'package:classchronicalapp/color.dart';
+import 'package:classchronicalapp/model/student/student_model.dart';
 import 'package:classchronicalapp/routes.dart';
 import 'package:classchronicalapp/views/student/profile/privacy_policy_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'change_password_screen.dart';
@@ -28,96 +31,113 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            height: 350,
-            width: size.width,
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Palette.themecolor,
-              // borderRadius: BorderRadius.only(
-              //   bottomLeft: Radius.circular(20),
-              //   bottomRight: Radius.circular(20),
-              // ),
-            ),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      RouteNavigator.route(
-                          context,
-                          Hero(
-                            tag: "profile",
-                            child: Image.asset(
-                              "assets/images/jpg/avatar.jpeg",
+          StreamBuilder<StudentModel>(
+            stream: filterUser(FirebaseAuth.instance.currentUser!.uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong! ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final studentModel = snapshot.data!;
+
+                return Container(
+                  height: 350,
+                  width: size.width,
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    color: Palette.themecolor,
+                    // borderRadius: BorderRadius.only(
+                    //   bottomLeft: Radius.circular(20),
+                    //   bottomRight: Radius.circular(20),
+                    // ),
+                  ),
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            RouteNavigator.route(
+                                context,
+                                Hero(
+                                  tag: "profile",
+                                  child: Image.network(
+                                    studentModel.profile_image,
+                                  ),
+                                ));
+                          },
+                          child: CircleAvatar(
+                            radius: 55,
+                            backgroundColor: themewhitecolor,
+                            child: Hero(
+                              tag: "profile",
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: themewhitecolor,
+                                backgroundImage:
+                                    NetworkImage(studentModel.profile_image),
+                              ),
                             ),
-                          ));
-                    },
-                    child: const CircleAvatar(
-                      radius: 55,
-                      backgroundColor: themewhitecolor,
-                      child: Hero(
-                        tag: "profile",
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: themewhitecolor,
-                          backgroundImage:
-                              AssetImage("assets/images/jpg/avatar.jpeg"),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Saba Khan",
-                        style: TextStyle(
-                          color: themewhitecolor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: themewhitecolor,
-                        child: Icon(
-                          Icons.male,
-                          color: Palette.themecolor,
-                          size: 20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${studentModel.name} ${studentModel.surname}",
+                              style: const TextStyle(
+                                color: themewhitecolor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CircleAvatar(
+                              radius: 16,
+                              backgroundColor: themewhitecolor,
+                              child: Icon(
+                                studentModel.gender == "Male"
+                                    ? Icons.male
+                                    : Icons.female,
+                                color: Palette.themecolor,
+                                size: 20,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            color: themewhitecolor,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            studentModel.email,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    decoration: BoxDecoration(
-                      color: themewhitecolor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Text(
-                      "sabakhan@gmail.com",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
                   ),
-                ],
-              ),
-            ),
+                );
+              } else {
+                return Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.grey.shade200));
+              }
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -184,6 +204,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  Stream<StudentModel> filterUser(String currentUserUid) {
+    return FirebaseFirestore.instance
+        .collection('student_auth')
+        .doc(currentUserUid)
+        .snapshots()
+        .map((snapshot) => StudentModel.fromSnap(snapshot));
   }
 }
 
