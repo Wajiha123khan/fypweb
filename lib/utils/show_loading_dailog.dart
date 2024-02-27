@@ -1,6 +1,6 @@
+import 'package:classchronicalapp/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:classchronicalapp/color.dart';
 
 show_loading_dialog(context) {
   return showAnimatedDialog(

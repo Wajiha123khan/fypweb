@@ -1,7 +1,6 @@
 import 'package:classchronicalapp/views/student/auth/student_login_screen.dart';
 import 'package:classchronicalapp/views/teacher/auth/teacher_login_screen.dart';
 import 'package:classchronicalapp/widgets/custom_button.dart';
-import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';

@@ -1,6 +1,8 @@
 import 'package:classchronicalapp/provider/auth_pro.dart';
+import 'package:classchronicalapp/provider/notification_pro.dart';
 import 'package:classchronicalapp/provider/teacher_pro.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -12,9 +14,18 @@ import 'provider/degree_pro.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(
     const MyApp(),
   );
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  print("message.notification!.title.toString()");
+  print(message.notification!.title.toString());
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<DegreePro>(
           create: (_) => DegreePro(),
+        ),
+        ChangeNotifierProvider<NotificationPro>(
+          create: (_) => NotificationPro(),
         ),
       ],
       child: MaterialApp(

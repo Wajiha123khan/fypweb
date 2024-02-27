@@ -1,16 +1,13 @@
 import 'package:classchronicalapp/color.dart';
-import 'package:classchronicalapp/navigation/student_nav_bar.dart';
 import 'package:classchronicalapp/provider/auth_pro.dart';
 import 'package:classchronicalapp/routes.dart';
 import 'package:classchronicalapp/views/student/auth/forgot_password/forgot_password_screen.dart';
 import 'package:classchronicalapp/widgets/custom_button.dart';
 import 'package:classchronicalapp/widgets/custom_icon_button.dart';
-import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
 import 'package:classchronicalapp/widgets/custom_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import 'register_screen.dart';
@@ -26,11 +23,11 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailC = TextEditingController();
   final TextEditingController passwordC = TextEditingController();
+  bool hidebottom = false;
 
   bool visiblePass = true;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(
@@ -116,6 +113,20 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                             controller: emailC,
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
+                            onTap: () {
+                              setState(
+                                () {
+                                  hidebottom = true;
+                                },
+                              );
+                            },
+                            onFieldSubmitted: (check) {
+                              setState(
+                                () {
+                                  hidebottom = false;
+                                },
+                              );
+                            },
                             decoration: InputDecoration(
                               fillColor: themelightgreycolor,
                               filled: true,
@@ -159,6 +170,20 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.next,
                             obscureText: visiblePass,
+                            onTap: () {
+                              setState(
+                                () {
+                                  hidebottom = true;
+                                },
+                              );
+                            },
+                            onFieldSubmitted: (check) {
+                              setState(
+                                () {
+                                  hidebottom = false;
+                                },
+                              );
+                            },
                             decoration: InputDecoration(
                               fillColor: themelightgreycolor,
                               filled: true,
@@ -264,33 +289,35 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Text.rich(
-                TextSpan(
-                  text: "Don't have an account? ",
-                  style: const TextStyle(
-                    color: themeblackcolor,
-                    fontSize: 16,
-                  ),
-                  children: [
-                    TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => RouteNavigator.route(
-                              context,
-                              const RegisterScreen(),
+            hidebottom
+                ? Container()
+                : Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text.rich(
+                      TextSpan(
+                        text: "Don't have an account? ",
+                        style: const TextStyle(
+                          color: themeblackcolor,
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => RouteNavigator.route(
+                                    context,
+                                    const RegisterScreen(),
+                                  ),
+                            text: "Register",
+                            style: const TextStyle(
+                              color: Palette.themecolor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                      text: "Register",
-                      style: const TextStyle(
-                        color: Palette.themecolor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ],
         ),
       ),

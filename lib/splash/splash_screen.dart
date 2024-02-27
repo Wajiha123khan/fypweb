@@ -19,7 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     final degreeProvider = Provider.of<DegreePro>(context, listen: false);
-    degreeProvider.Get_degree_drop_down_fun();
+
+    degreeProvider.getDegreesListFunc();
 
     Timer(const Duration(seconds: 3), () {
       SplashServices().islogin(context);

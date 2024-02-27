@@ -22,6 +22,7 @@ class StudentModel {
   final Timestamp date_time;
   final String profile_image;
   final String doc;
+  final String token;
   const StudentModel({
     required this.uid,
     required this.name,
@@ -44,6 +45,7 @@ class StudentModel {
     required this.date_time,
     required this.profile_image,
     required this.doc,
+    required this.token,
   });
 
   Map<String, dynamic> toJson() => {
@@ -68,6 +70,7 @@ class StudentModel {
         'date_time': date_time,
         'profile_image': profile_image,
         'doc': doc,
+        'token': token,
       };
   static StudentModel fromJson(Map<String, dynamic> json) => StudentModel(
         uid: json['uid'] ?? '',
@@ -91,6 +94,7 @@ class StudentModel {
         date_time: json['date_time'] ?? '',
         profile_image: json['profile_image'] ?? '',
         doc: json['doc'] ?? '',
+        token: json['token'] ?? '',
       );
   static StudentModel fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -117,6 +121,7 @@ class StudentModel {
       date_time: snapshot["date_time"],
       profile_image: snapshot["profile_image"],
       doc: snapshot["doc"],
+      token: snapshot["token"],
     );
   }
 }

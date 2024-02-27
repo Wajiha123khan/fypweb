@@ -1,7 +1,8 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:classchronicalapp/color.dart';
 import 'package:classchronicalapp/views/student/Home/student_home_screen.dart';
-import 'package:classchronicalapp/views/student/profile/profile_screen.dart';
+import 'package:classchronicalapp/views/student/notifications/student_notifications_screen.dart';
+import 'package:classchronicalapp/views/student/profile/student_profile_screen.dart';
 import 'package:classchronicalapp/views/student/schedule/student_schedule_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,8 @@ class _StudentNavBarState extends State<StudentNavBar> {
         children: const [
           StudentHomeScreen(),
           StudentScheduleScreen(),
-          ProfileScreen()
+          StudentsNotificationScreen(),
+          StudentProfileScreen()
         ],
         onPageChanged: (index) {
           setState(() => _selectedTab = index);
@@ -54,6 +56,16 @@ class _StudentNavBarState extends State<StudentNavBar> {
                 Icons.schedule_sharp,
               ),
               title: Text('Schedule'),
+              activeColor: Palette.themecolor,
+              activeTitleColor: themewhitecolor,
+              activeIconColor: themewhitecolor,
+              backgroundColorOpacity: 0.9,
+            ),
+            BottomBarItem(
+              icon: Icon(
+                Icons.notifications,
+              ),
+              title: Text('Notifications'),
               activeColor: Palette.themecolor,
               activeTitleColor: themewhitecolor,
               activeIconColor: themewhitecolor,

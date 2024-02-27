@@ -1,22 +1,73 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class DegreePro with ChangeNotifier {
-  // final _current_uid = FirebaseAuth.instance.currentUser!.uid;
-  final _firestore = FirebaseFirestore.instance;
 
-  List degree_get = [];
-  Get_degree_drop_down_fun() async {
-    degree_get = [];
+  //fetching degrees
+  List degreeGet = [];
+  Future<void> getDegreesListFunc() async {
+    degreeGet = [];
 
-    FirebaseFirestore.instance.collection("degree").get().then(
+    await FirebaseFirestore.instance.collection("degree").get().then(
       (value) async {
         value.docs.forEach((doc) {
-          degree_get.add(doc.data()["title"]);
+          // degree_get.add(doc.data()["title"]);
+          degreeGet.add(doc.data());
           notifyListeners();
         });
       },
     );
   }
+
+  List semesterGet = [];
+  Future<void> getSemestersListFunc(String degreeId) async {
+    log("degreeId: $degreeId");
+    semesterGet = [];
+
+    await FirebaseFirestore.instance
+        .collection("semester")
+        .where("degree_id", isEqualTo: degreeId)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        log("element: ${element.data()}");
+        semesterGet.add(element.data());
+        notifyListeners();
+      });
+    });
+    // await FirebaseFirestore.instance
+    //     .collection("semester")
+    //     // .where("degree_id", isEqualTo: degreeId)
+    //     .get()
+    //     .then(
+    //   (value) async {
+    //     value.docs.forEach((doc) {
+    //       log("doc data: ${doc.data()}");
+    //       semesterGet.add(doc.data());
+    //       notifyListeners();
+    //     });
+    //   },
+    // );
+  }
+
+  // List semester_get = [];
+  // Get_semester_drop_down_fun(String degreeId) async {
+  //   semester_get = [];
+
+  //   FirebaseFirestore.instance
+  //       .collection("degree")
+  //       .where("degree_id", isEqualTo: degreeId)
+  //       .get()
+  //       .then(
+  //     (value) async {
+  //       value.docs.forEach((doc) {
+  //         // degree_get.add(doc.data()["title"]);
+  //         semester_get.add(doc.data());
+  //         notifyListeners();
+  //       });
+  //     },
+  //   );
+  // }
 }

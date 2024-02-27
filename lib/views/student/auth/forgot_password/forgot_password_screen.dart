@@ -3,7 +3,6 @@ import 'package:classchronicalapp/routes.dart';
 import 'package:classchronicalapp/views/student/auth/student_login_screen.dart';
 import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);

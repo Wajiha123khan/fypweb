@@ -1,3 +1,4 @@
+
 import 'package:classchronicalapp/color.dart';
 import 'package:classchronicalapp/routes.dart';
 import 'package:classchronicalapp/splash/splash_screen.dart';
@@ -25,7 +26,7 @@ class _StudentWaitingScreenState extends State<StudentWaitingScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 FirebaseAuth.instance.signOut();
                 RouteNavigator.replacementroute(context, SplashScreen());
               },

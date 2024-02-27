@@ -1,22 +1,18 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:classchronicalapp/color.dart';
 import 'package:classchronicalapp/provider/auth_pro.dart';
 import 'package:classchronicalapp/provider/degree_pro.dart';
-import 'package:classchronicalapp/routes.dart';
-import 'package:classchronicalapp/use_full/pick_image.dart';
+import 'package:classchronicalapp/utils/pick_image.dart';
 import 'package:classchronicalapp/widgets/custom_button.dart';
 import 'package:classchronicalapp/widgets/custom_icon_button.dart';
-import 'package:classchronicalapp/widgets/custom_simple_rounded_button.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'student_login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,6 +22,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  @override
+  void initState() {
+    final postPro = Provider.of<DegreePro>(context, listen: false);
+    postPro.semesterGet.clear();
+    super.initState();
+  }
+
   bool hidebottom = false;
   bool visiblePass = true;
   bool visibleRepeatPass = true;
@@ -48,7 +51,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController parentAddressC = TextEditingController();
   final TextEditingController parentCnicC = TextEditingController();
 
-  String degree_value = "";
+  String degreeId = "";
+  String semesterId = "";
   final List<String> gender = ['Male', 'Female'];
   String gender_value = "";
   Uint8List? profileImage;
@@ -79,7 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final degreeModel = Provider.of<DegreePro>(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -412,7 +415,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     TextFormField(
                       controller: passwordC,
-                      keyboardType: const TextInputType.numberWithOptions(),
                       textInputAction: TextInputAction.next,
                       obscureText: visiblePass,
                       decoration: InputDecoration(
@@ -556,60 +558,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    // Container(
-                    //   padding: const EdgeInsets.all(15),
-                    //   decoration: BoxDecoration(
-                    //     color: themelightgreycolor,
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   child: Row(
-                    //     children: [
-                    //       Text(
-                    //         "Select Gender",
-                    //         style: TextStyle(
-                    //           color: themegreytextcolor,
-                    //           fontSize: 15,
-                    //           fontWeight: FontWeight.w600,
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: RadioListTile(
-                    //           value: 0,
-                    //           groupValue: value,
-                    //           onChanged: (int? valuemale) {
-                    //             setState(
-                    //               () {
-                    //                 value = valuemale!;
-                    //               },
-                    //             );
-                    //           },
-                    //           title: const Text(
-                    //             "Male",
-                    //           ),
-                    //           activeColor: Palette.themecolor,
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: RadioListTile(
-                    //           contentPadding: EdgeInsets.zero,
-                    //           value: 1,
-                    //           groupValue: value,
-                    //           onChanged: (int? valuefemale) {
-                    //             setState(
-                    //               () {
-                    //                 value = valuefemale!;
-                    //               },
-                    //             );
-                    //           },
-                    //           title: const Text(
-                    //             "Female",
-                    //           ),
-                    //           activeColor: Palette.themecolor,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
 
                     DropdownButtonFormField(
                         style: const TextStyle(color: themeblackcolor),
@@ -657,6 +605,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 15,
                     ),
                     //select degree
+
                     DropdownButtonFormField(
                         style: const TextStyle(color: themeblackcolor),
                         decoration: InputDecoration(
@@ -680,19 +629,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        items: degreeModel.degree_get
+                        items: degreeModel.degreeGet
                             .map((item) => DropdownMenuItem(
-                                value: item,
+                                value: item['degree_id'],
                                 child: Text(
-                                  item,
+                                  item['title'],
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: themeblackcolor,
                                   ),
                                 )))
                             .toList(),
-                        onChanged: (item) {
-                          degree_value = item.toString();
+                        onChanged: (item) async {
+                          log("degree_value: $item");
+                          degreeId = item.toString();
+                          final postPro =
+                              Provider.of<DegreePro>(context, listen: false);
+                          await postPro.getSemestersListFunc(degreeId);
                         },
                         validator: (value) {
                           if (value == null) {
@@ -700,9 +653,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           return null;
                         }),
-                    const SizedBox(
-                      height: 20,
-                    ),
+
+                    Consumer<DegreePro>(builder: ((context, modelValue, child) {
+                      return modelValue.semesterGet.isEmpty
+                          ? Container()
+                          : Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                DropdownButtonFormField(
+                                    style:
+                                        const TextStyle(color: themeblackcolor),
+                                    decoration: InputDecoration(
+                                      fillColor: themelightgreycolor,
+                                      filled: true,
+                                      hintText: "Select Your Semester",
+                                      hintStyle: const TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                      labelText: "Select Semester",
+                                      labelStyle: const TextStyle(
+                                          color: Colors.grey, fontSize: 16),
+                                      alignLabelWithHint: true,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    items: degreeModel.semesterGet
+                                        .map((item) => DropdownMenuItem(
+                                            value: item['semester_id'],
+                                            child: Text(
+                                              item['title'],
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: themeblackcolor,
+                                              ),
+                                            )))
+                                        .toList(),
+                                    onChanged: (item) {
+                                      log("semester Id: $item");
+                                      semesterId = item.toString();
+                                    },
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return "Please Select Semester";
+                                      }
+                                      return null;
+                                    }),
+                              ],
+                            );
+                    })),
                     const Text(
                       "Student ID Card",
                       style: TextStyle(
@@ -953,7 +961,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   passwordC.text,
                                   addressC.text,
                                   studentCardDoc!,
-                                  degree_value,
+                                  degreeId,
+                                  semesterId,
                                   gender_value,
                                   fatherNameC.text,
                                   motherNameC.text,
@@ -998,36 +1007,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(
               height: 10,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text.rich(
-                  TextSpan(
-                    text: "Already have an account? ",
-                    style: const TextStyle(
-                      color: themeblackcolor,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => RouteNavigator.route(
-                                context,
-                                const StudentLoginScreen(),
-                              ),
-                        text: "Login",
-                        style: const TextStyle(
-                          color: Palette.themecolor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
           ],
         ),

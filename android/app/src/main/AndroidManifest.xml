@@ -21,6 +21,10 @@
               android:resource="@style/NormalTheme"
               />
             <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+             <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>  
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
@@ -30,5 +34,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.firebase.messaging.com.mrhassyy.classchronicalapp"
+            android:value="high_importance_channel"/>
     </application>
 </manifest>

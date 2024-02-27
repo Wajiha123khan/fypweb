@@ -1,7 +1,9 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:classchronicalapp/color.dart';
-import 'package:classchronicalapp/views/student/Home/student_home_screen.dart';
 import 'package:classchronicalapp/views/teacher/home/teache_home_screen.dart';
+import 'package:classchronicalapp/views/teacher/notification/teacher_notifications_screen.dart';
+import 'package:classchronicalapp/views/teacher/profile/teacher_profile_screen.dart';
+import 'package:classchronicalapp/views/teacher/schedule/teacher_schedule_screen.dart';
 import 'package:flutter/material.dart';
 
 class TeacherNavBar extends StatefulWidget {
@@ -20,11 +22,11 @@ class _TeacherNavBarState extends State<TeacherNavBar> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [
+        children: const [
           TeacherHomeScreen(),
-          Container(),
-          Container(),
-          Container(),
+          TeacherScheduleScreen(),
+          TeacherNotificationScreen(),
+          TeacherProfileScreen(),
         ],
         onPageChanged: (index) {
           setState(() => _selectedTab = index);
@@ -60,8 +62,10 @@ class _TeacherNavBarState extends State<TeacherNavBar> {
               backgroundColorOpacity: 0.9,
             ),
             BottomBarItem(
-              icon: Icon(Icons.chat_bubble),
-              title: Text('Chat'),
+              icon: Icon(
+                Icons.notifications,
+              ),
+              title: Text('Notification'),
               activeColor: Palette.themecolor,
               activeTitleColor: themewhitecolor,
               activeIconColor: themewhitecolor,

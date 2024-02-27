@@ -8,6 +8,7 @@ class TeacherModel {
   final String email;
   final String password;
   final String qualification;
+  final String aboutMe;
   final Timestamp date_time;
 
   const TeacherModel({
@@ -18,6 +19,7 @@ class TeacherModel {
     required this.email,
     required this.password,
     required this.qualification,
+    required this.aboutMe,
     required this.date_time,
   });
 
@@ -29,6 +31,7 @@ class TeacherModel {
         'email': email,
         'password': password,
         'qualification': qualification,
+        'aboutMe': aboutMe,
         'date_time': date_time,
       };
   static TeacherModel fromJson(Map<String, dynamic> json) => TeacherModel(
@@ -39,6 +42,7 @@ class TeacherModel {
         email: json['email'] ?? '',
         password: json['password'] ?? '',
         qualification: json['qualification'] ?? '',
+        aboutMe: json['aboutMe'] ?? '',
         date_time: json['date_time'] ?? '',
       );
 
@@ -53,6 +57,7 @@ class TeacherModel {
       email: snapshot["email"],
       password: snapshot["password"],
       qualification: snapshot["qualification"],
+      aboutMe: snapshot["aboutMe"],
       date_time: snapshot["date_time"],
     );
   }

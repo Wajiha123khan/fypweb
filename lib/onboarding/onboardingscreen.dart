@@ -1,10 +1,9 @@
 import 'package:classchronicalapp/color.dart';
 import 'package:classchronicalapp/person_category_screen.dart';
 import 'package:classchronicalapp/routes.dart';
-import 'package:classchronicalapp/views/student/auth/student_login_screen.dart';
 import 'package:classchronicalapp/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -17,11 +16,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int currentIndex = 0;
 
-  // _storeOnBoarding() async {
-  //   int isViewed = 0;
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   await preferences.setInt('onboarding', isViewed);
-  // }
+  _storeOnBoarding() async {
+    int isViewed = 0;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setInt('onboarding', isViewed);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         } else if (currentIndex == 1) {
                           _pageController.jumpToPage(2);
                         } else if (currentIndex == 2) {
+                          _storeOnBoarding();
                           RouteNavigator.pushandremoveroute(
                             context,
                             const PersonCategoryScreen(),

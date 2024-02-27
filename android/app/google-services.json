@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "77578831892",
-    "project_id": "class-chronical",
-    "storage_bucket": "class-chronical.appspot.com"
+    "project_number": "114872867542",
+    "project_id": "class-chronincal",
+    "storage_bucket": "class-chronincal.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:77578831892:android:eff14ee0bed98cb6ae3f01",
+        "mobilesdk_app_id": "1:114872867542:android:5bf3bf71a42a5674a00777",
         "android_client_info": {
           "package_name": "com.mrhassyy.classchronicalapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBKalrflnr-jqM3Bv_uLRmL8X5JPIgVY2Q"
+          "current_key": "AIzaSyDcEC1TnBiDGuixlMuLjJYIGRJaAbjTewQ"
         }
       ],
       "services": {

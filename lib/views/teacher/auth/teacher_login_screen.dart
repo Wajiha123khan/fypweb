@@ -1,7 +1,5 @@
 import 'package:classchronicalapp/color.dart';
-import 'package:classchronicalapp/navigation/teacher_nav_bar.dart';
 import 'package:classchronicalapp/provider/teacher_pro.dart';
-import 'package:classchronicalapp/routes.dart';
 import 'package:classchronicalapp/widgets/custom_button.dart';
 import 'package:classchronicalapp/widgets/custom_icon_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +21,6 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   bool visiblePass = true;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(

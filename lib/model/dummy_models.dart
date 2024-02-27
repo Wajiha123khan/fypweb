@@ -1,34 +1,3 @@
-import 'package:classchronicalapp/color.dart';
-import 'package:flutter/material.dart';
-
-class SubjectModel {
-  final String subjectName;
-
-  final String userImage;
-  SubjectModel({
-    required this.subjectName,
-    required this.userImage,
-  });
-}
-
-List<SubjectModel> subjectModelList = [
-  SubjectModel(
-      subjectName: "Calculus",
-      userImage:
-          "https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-  SubjectModel(
-      subjectName: "Data Science",
-      userImage:
-          "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-  SubjectModel(
-      subjectName: "Probabilty",
-      userImage:
-          "https://images.pexels.com/photos/220301/pexels-photo-220301.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-  SubjectModel(
-      subjectName: "Python Programming",
-      userImage:
-          "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-];
 
 class TempTeacherModel {
   final String teacherName;
